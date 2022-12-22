@@ -1,0 +1,33 @@
+*{
+  box-sizing: border-box;
+}
+.todo-wrapper{
+  width: 60%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.todo-input{
+  width: 100%;
+  padding: 30px;
+}
+.todo-input-item{
+  margin-bottom: 2%;
+}
+input{
+  width: 100%;
+}
+.todo-list{
+  text-align: center;
+  padding : 20px;
+}
+.card-area{
+  min-height: 150px;
+}
+.btn-area{
+  width: 30%;
+}
+.active{
+  background-color: gainsboro;
+}
