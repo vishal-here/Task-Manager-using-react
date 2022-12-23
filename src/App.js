@@ -31,6 +31,7 @@ function App() {
     localStorage.setItem("todo-item", JSON.stringify(oldArray));
     setTodos(oldArray);
     console.log(oldArray);
+
   };
   const handleComplete = (index) =>{
     let now = new Date() ;
@@ -65,17 +66,17 @@ function App() {
     if(savedCompletedTodos) setCompletedTaskArray(savedCompletedTodos) ;
   }, []);
   return (
-    <div className="App rounded shadow mt-3 p-3">
-      <h1 style={{ textAlign: "center", fontFamily: "Cursive" }}>
+    <div className="App rounded shadow p-3">
+      <h1 style={{ textAlign: "center", fontFamily: "Cursive" , marginTop : "20px", marginBottom : "20px" }}>
         Personal Task Manager
       </h1>
       <div className="todo-wrapper rounded shadow-sm">
         <div className="todo-input">
           <div className="todo-input-item">
-            <div className="row">
-              <div className="col-6">
-                <label htmlFor="title" style={{ marginRight: "100px" }}>
-                  <h6> TITLE</h6>
+            <div className="row ">
+              <div className="col-6 ">
+                <label htmlFor="title" >
+                  <h6 className="bd-highlight todo-fields"> TITLE</h6>
                 </label>
               </div>
               <div className="col-6">
@@ -95,8 +96,8 @@ function App() {
           <div className="todo-input-item">
             <div className="row">
               <div className="col-6">
-                <label htmlFor="Description" style={{ marginRight: "50px" }}>
-                  <h6>DESCRIPTION</h6>
+                <label htmlFor="Description" >
+                  <h6 className="bd-highlight todo-fields">DESCRIPTION</h6>
                 </label>
               </div>
               <div className="col-6">
@@ -115,7 +116,7 @@ function App() {
             <div className="row">
               <div className="col-6">
                 <label htmlFor="Priority">
-                  <h6>PRIORITY</h6>
+                  <h6 className="bd-highlight todo-fields">PRIORITY</h6>
                 </label>
               </div>
 
@@ -141,7 +142,7 @@ function App() {
             <div className="row">
               <div className="col-6">
                 <label htmlFor="Deadline">
-                  <h6>DEADLINE</h6>
+                  <h6 className="bd-highlight todo-fields">DEADLINE</h6>
                 </label>
               </div>
               <div className="col-6">
@@ -174,7 +175,7 @@ function App() {
       </div>
 
       <div
-        className="shadow-sm  w-75 m-auto px-3"
+        className="shadow-lg  w-75 m-auto px-3"
         style={{ minHeight: "200px", paddingTop: "2px" }}
       >
         <div className="row  mt-5 ">
