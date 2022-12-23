@@ -7,7 +7,9 @@ function App() {
   const [description , setDescription] = useState("") ;
   const [deadline , setDeadline] = useState("") ;
   const [priority , setPriority] = useState("") ;
-  
+  const [addStatus , setAddStatus] = useState(false) ; 
+
+ 
   const addTodo = ()=>{
     let newTodo = {
       titles : title ,
@@ -17,11 +19,17 @@ function App() {
     }
     
     let newArray = [...todos] ;
-    console.log(newArray)
-
     newArray.push(newTodo) ;
     setTodos(newArray) ;
-    
+    console.log(newArray) ; 
+  }
+
+  const handleDelete = (index)=>{
+    let oldArray = [...todos] ;
+    oldArray.splice(index) ;
+    setTodos(oldArray) ;
+    console.log(oldArray) ; 
+    // console.log(newArray) ;
   }
   return (
     <div className="App">
@@ -42,7 +50,7 @@ function App() {
                   id="title"
                   placeholder="What's the task title ?"
                   
-                  onChange={(e)=> setTitle(e.target.value)}
+                  onChange={(e)=> {setTitle(e.target.value) ; setAddStatus(true)}}
                   required
                 />
               </div>
@@ -144,8 +152,8 @@ function App() {
             </div>
           </div>
           <div className="todo-input-submit d-flex justify-content-around mt-3">
-            <button className="btn btn-primary w-25"
-            onClick={addTodo  }
+            <button className= { `btn btn-primary ${addStatus === false && 'disabled'}`}
+            onClick={ addTodo  } 
             
             >Add</button>
           </div>
@@ -153,32 +161,39 @@ function App() {
       </div>
 
       <div
-        className="shadow-lg mt-2 w-75 m-auto px-3"
+        className="shadow-sm  w-75 m-auto px-3"
         style={{ minHeight: "200px", paddingTop: "2px" }}
       >
-        <div className="d-flex justify-content-around mt-5">
-          <button
+        <div className="row  mt-5 ">
+       <div className="col-6 ">
+       <button
             onClick={() => {
               setIsPending(true);
               console.log(isPending);
             }}
             className={`card btn-area ${
-              isPending == true && "active"
-            } shadow-sm align-item-center text-primary  p-2`}
+              isPending === true && "active"
+            } shadow-sm text-primary  p-2`}
           >
-            <h4>PENDING</h4>
+            <h3>PENDING</h3>
           </button>
+       </div>
+       <div className="col-6 ">
+
           <button
             onClick={() => {
               setIsPending(false);
               console.log(isPending);
             }}
             className={`card btn-area ${
-              isPending == false && "active"
-            } shadow-sm align-item-center text-primary  p-2`}
+              isPending === false && "active"
+            } shadow-sm  text-primary  p-2`}
           >
-            <h4>COMPLETED</h4>
+            <h3>
+              COMPLETED
+            </h3>
           </button>
+       </div>
         </div>
         <div className=" row todo-list g-4">
         {
@@ -187,18 +202,20 @@ function App() {
 
           todos.map((item,index)=>{
             return(
-              <div className=" col-4" key={index}>
-              <div className="card card-area rounded shadow-sm">
+              <div className="  col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3" key={index}>
+              <div className="card card-area rounded shadow">
                 <h3>{item.titles === "" ? "Untitled" : item.titles} </h3>
                 <p>
-                  <i>{item.descriptions === "" ? "No desriptions provided" : item.descriptions}</i>
+                  <i>{item.descriptions === "" ? "No desecription provided" : item.descriptions}</i>
                 </p>
                 <div className="d-flex justify-content-around">
-                  <h6 className="bd-highlight">{item.priority}</h6>
-                  <h6>{item.deadlines}</h6>
+                  <h6 className="bd-highlight">{item.priority === "" ? "NO PRIORITY SET" : item.priority}</h6>
+                  <h6>{item.deadlines === "" ? "NO DEADLINES" : item.deadlines}</h6>
                 </div>
                 <div className="d-flex justify-content-around shadow-sm p-2">
-                  <button type="button" className="btn btn-outline-danger">
+                  <button type="button" className="btn btn-outline-danger"
+                  onClick={()=> handleDelete(index)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
