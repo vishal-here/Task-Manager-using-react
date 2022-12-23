@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 function App() {
   const [isPending, setIsPending] = useState(true);
   const [todos ,setTodos] = useState([]) ;
@@ -22,12 +22,22 @@ function App() {
     newArray.push(newTodo) ;
     setTodos(newArray) ;
     console.log(newArray) ; 
+
+    localStorage.setItem('todo-item' , JSON.stringify(newArray))
+
   }
 
-  const handleDelete = (index)=>{
+  useEffect(()=> {
+    let savedTodos = JSON.parse(localStorage.getItem('todo-item')) ;
+    setTodos(savedTodos) ;
+  } , [])
+
+
+  function handleDelete  (index){
     let oldArray = [...todos] ;
-    oldArray.splice(index) ;
+    oldArray.splice(index ,1 ) ;
     setTodos(oldArray) ;
+    localStorage.setItem('todo-item' , JSON.stringify(oldArray)) ; 
     console.log(oldArray) ; 
     // console.log(newArray) ;
   }
