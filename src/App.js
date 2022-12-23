@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 function App() {
   const [isPending, setIsPending] = useState(true);
   const [todos ,setTodos] = useState([]) ;
@@ -21,18 +21,24 @@ function App() {
     let newArray = [...todos] ;
     newArray.push(newTodo) ;
     setTodos(newArray) ;
+    localStorage.setItem('todo-item', JSON.stringify(newArray)) ;
     console.log(newArray) ; 
   }
 
   const handleDelete = (index)=>{
     let oldArray = [...todos] ;
-    oldArray.splice(index) ;
+    oldArray.splice(index,1) ;
+    localStorage.setItem('todo-item', JSON.stringify(oldArray)) ;
     setTodos(oldArray) ;
     console.log(oldArray) ; 
-    // console.log(newArray) ;
   }
+
+  useEffect(()=>{
+    let savedTodo = JSON.parse(localStorage.getItem('todo-item')) ;
+    setTodos(savedTodo) ;
+  },[])
   return (
-    <div className="App">
+    <div className="App rounded shadow mt-3 p-3">
       <h1 style={{ textAlign: "center" , fontFamily: "Cursive" }}>Personal Task Manager</h1>
       <div className="todo-wrapper rounded shadow-sm">
         <div className="todo-input">
