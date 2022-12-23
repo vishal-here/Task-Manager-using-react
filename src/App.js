@@ -9,6 +9,7 @@ function App() {
   const [deadline, setDeadline] = useState("");
   const [priority, setPriority] = useState("");
   const [addStatus, setAddStatus] = useState(false);
+  const [filter, setFilter] = useState("All") ; 
 
   const addTodo = () => {
     let newTodo = {
@@ -58,6 +59,12 @@ function App() {
   localStorage.setItem('completed-todos',JSON.stringify(oldArray))
   setCompletedTaskArray(oldArray) ;
  }
+  const handleFilter = (val)=> {
+    console.log(val) ;
+    setFilter(val) ; 
+
+  }
+
   useEffect(() => {
     let savedTodo = JSON.parse(localStorage.getItem("todo-item"));
     if(savedTodo) setTodos(savedTodo);
@@ -206,16 +213,48 @@ function App() {
             </button>
           </div>
         </div>
+
+     {
+      isPending === true && 
+
+      <div className="d-flex justify-content-around my-5 bg-white rounded shadow p-2">
+      <div className="d-inline w-50 my-auto"> <b>FILTERS</b> </div>
+     <button className={`btn-area card ${ filter === "All" && 'active'}`} value = "All" 
+     onClick={ (e)=> handleFilter(e.target.value)}
+     >All</button>
+<select 
+onClick={ (e)=> handleFilter(e.target.value)}
+className={`form-select btn-area card ${ (filter === "HIGH" ||filter === "MEDIUM" ||filter === "LOW" ||filter === "USELESS") && 'active'}`} aria-label="Default select Priority">
+<option >Select Priority</option>
+<option value="HIGH">HIGH</option>
+<option value="MEDIUM">MEDIUM</option>
+<option value="LOW">LOW</option>
+<option value="USELESS">NOT IMPORTANT</option>
+</select>
+
+<select
+onClick={ (e)=> handleFilter(e.target.value)}
+className={`form-select btn-area card ${ (filter === "TODAY" ||filter === "TOMORROW" ||filter === "THIS WEEK" ||filter === "THIS MONTH") && 'active'}`} aria-label="Default select Deadline">
+<option >Select Deadline</option>
+<option value="TODAY">TODAY</option>
+<option value="TOMORROW">TOMORROW</option>
+<option value="THIS WEEK">THIS WEEK</option>
+<option value="THIS MONTH">THIS MONTH</option>
+</select>
+
+    </div>
+     }
+
         <div className=" row todo-list g-4">
           {
           
-        isPending=== true &&  todos.map((item, index) => {
+        isPending=== true && filter !== "All"  &&  todos.filter((item) => (item.deadlines === filter || item.priority === filter)).map((item, index) => {
             return (
               <div
                 className="  col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3"
                 key={index}
               >
-                <div className="card card-area rounded shadow">
+                <div className="card card-area rounded shadow-lg">
                   <h3>{item.titles === "" ? "Untitled" : item.titles} </h3>
                   <p>
                     <i>
@@ -275,6 +314,74 @@ function App() {
               </div>
             );
           })}
+          {
+        isPending=== true && filter === "All"  &&  todos.map((item, index) => {
+            return (
+              <div
+                className="  col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3"
+                key={index}
+              >
+                <div className="card card-area rounded shadow-lg">
+                  <h3>{item.titles === "" ? "Untitled" : item.titles} </h3>
+                  <p>
+                    <i>
+                      {item.descriptions === ""
+                        ? "No desecription provided"
+                        : item.descriptions}
+                    </i>
+                  </p>
+                  <div className="d-flex justify-content-around">
+                    <h6 className="bd-highlight">
+                      {item.priority === "" ? "NO PRIORITY SET" : item.priority}
+                    </h6>
+                    <h6>
+                      {item.deadlines === "" ? "NO DEADLINES" : item.deadlines}
+                    </h6>
+                  </div>
+                  <div className="d-flex justify-content-around shadow-sm p-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger"
+                      onClick={() => handleDelete(index)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-trash"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                        <path
+                          fillRule="evenodd"
+                          d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                        ></path>
+                      </svg>
+                      Delete
+                    </button>
+                    <button type="button" className="btn btn-primary"
+                    onClick={()=> handleComplete(index)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-check2-all"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"></path>
+                        <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"></path>
+                      </svg>
+                      Completed
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
         {  
           isPending === false &&  completedTaskArray.map((item, index) => {
             return (

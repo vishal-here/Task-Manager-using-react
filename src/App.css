@@ -7,9 +7,12 @@ label{
   float:right ;
 }
 .App{
+ 
   background-image: url('./todo.jpg');
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100vw 100vh;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 .todo-wrapper{
   background-color: white;
